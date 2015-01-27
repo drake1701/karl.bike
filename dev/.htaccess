@@ -4,11 +4,11 @@
 ## 
 
 ## Auth
+AuthName "Dev site restricted"
+AuthUserFile /var/www/html/dev/.htpasswd
 AuthType Basic
-AuthName "Quit lookin' at me, swan!"
-AuthUserFile /var/www/html/admin/.htpasswd
-Require valid-user
-Order deny,allow
-Deny from all
+require valid-user
+Order allow,deny
 Allow from 173.20.118.123
+Allow from 68.255.220.73
 Satisfy any
