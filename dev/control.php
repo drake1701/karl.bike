@@ -16,7 +16,7 @@ if(!empty($_POST['save'])){
             if(is_array($_FILES)) {
                 // upload new images
                 $target_dir = $app->baseDir . "images/";
-                $target_file = $target_dir . basename($_FILES["filename"]["name"]);
+                $target_file = $target_dir . $app->underscore(basename($_FILES["filename"]["name"]));
                 $uploadOk = 1;
                 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
                 // Check if image file is a actual image or fake image
@@ -32,7 +32,7 @@ if(!empty($_POST['save'])){
                     // Check if file already exists
                     if (file_exists($target_file)) {
                         $app->alert("Sorry, file already exists.", 'warning');
-                        $uploadOk = 0;
+                        $uploadOk = 1;
                     }
                     // Check if $uploadOk is set to 0 by an error
                     if ($uploadOk == 0) {
@@ -41,16 +41,26 @@ if(!empty($_POST['save'])){
                     } else {
                         if (move_uploaded_file($_FILES["filename"]["tmp_name"], $target_file)) {
                             $app->alert("The file ". basename( $_FILES["filename"]["name"]). " has been uploaded.", 'success');
-                            $app->saveImage(array('filename' => 'images/' . basename( $_FILES["filename"]["name"])));
+                            $app->saveImage(array('filename' => 'images/' . basename( $target_file)));
                         } else {
                             $app->alert("Sorry, there was an error uploading your file.", 'danger');
                         }
                     }
                 }
             }
+            return header('Location: '.$app->baseUrl . 'admin.php?mode=images');
             break;
         case 'image':
             $app->saveImage($_POST);
+            return header('Location: '.$app->baseUrl . 'admin.php?mode=images');
+            break;
+    }
+    header('Location: '.$app->baseUrl . 'admin.php');
+} else if(!empty($_POST['delete'])){
+    switch($_REQUEST['mode']){
+        case 'image':
+            $app->deleteImage($_POST);
+            return header('Location: '.$app->baseUrl . 'admin.php?mode=images');
             break;
     }
     header('Location: '.$app->baseUrl . 'admin.php');
@@ -93,6 +103,7 @@ if(!empty($_POST['save'])){
             $siteHtml = $app->tag('images', $imageHtml, $siteHtml);
             
             file_put_contents($app->baseDir . 'index.html', $siteHtml);
+            $app->alert("Site has been rebuilt.", 'success');
             break;
     }
     if(!empty($_SESSION['messages'])) {

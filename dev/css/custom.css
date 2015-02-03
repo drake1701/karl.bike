@@ -1,0 +1,12 @@
+/**
+ * @author     Dennis Rogers <dennis@drogers.net>
+ * @address    www.drogers.net
+ * @date       2/3/15
+ */
+
+a {cursor: pointer;}
+.carousel-inner .item img {display:none;}
+.carousel-inner .item {
+    background-size:cover;
+    background-position: 50% 50%;
+}

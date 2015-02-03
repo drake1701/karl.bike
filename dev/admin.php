@@ -83,11 +83,15 @@
                     <?php break;
                     case 'images': ?>
                         <div class="row">
-                            <?php foreach($app->getImages() as $image): ?>
+                            <?php $i = 0; foreach($app->getImages() as $image): ?>
                             <div class="col-md-4<?php if($image->status == 0) echo ' disabled' ?>">
                                 <a href="?mode=image&id=<?php echo $image->id ?>" ><img src="<?php echo $image->filename ?>" alt="<?php echo $image->caption ?>" /></a>
                                 <p><?php echo $image->caption ?></p>
                             </div>
+                            <?php if(++$i % 3 == 0): ?>
+                        </div>
+                        <div class="row">
+                            <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
                         <form method="post" enctype="multipart/form-data">
@@ -121,6 +125,12 @@
                                     <input type="hidden" value="<?php echo $image->id ?>" name="id" />
                                     <br/>
                                     <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                                </form>
+                                <form method="post">
+                                    <input type="hidden" value="1" name="delete" />
+                                    <input type="hidden" value="<?php echo $image->id ?>" name="id" />
+                                    <br/>
+                                    <button class="btn btn-lg btn-warning btn-block" type="submit">Delete</button>
                                 </form>
                             </div>
                             <div class="col-md-6">

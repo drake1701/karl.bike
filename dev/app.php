@@ -115,6 +115,23 @@ class Karl_App
         $this->alert('Image saved.', 'success');
     }   
     
+    /* delete image */
+    public function deleteImage($postData) {
+        if($postData['id']){
+            $image = $this->getImage($postData['id']);
+            $file = $this->baseDir . '/' . basename($image->filename);
+            unlink($file);
+            
+            $imageRequest = $this->db->prepare('DELETE FROM `image` WHERE `id` = ?;');
+            $imageRequest->execute(array($postData['id']));
+            $this->alert('Image deleted.', 'success');
+            
+        } else {
+            $this->alert('No image record found', 'danger');
+        }
+            
+    }
+    
     function tag($tagName, $content, $html) {
         $tagName = str_replace("{{", "", str_replace("}}", "", $tagName));
         return preg_replace("#\{\{$tagName\}\}#", $content, $html);
