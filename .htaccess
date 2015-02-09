@@ -1,0 +1,13 @@
+## 
+## @author		Dennis Rogers
+## @address		www.drogers.net
+## 
+
+## Auth
+AuthName "Dev site restricted"
+AuthUserFile /var/www/html/dev/.htpasswd
+AuthType Basic
+require valid-user
+Order allow,deny
+Allow from all
+Satisfy any
